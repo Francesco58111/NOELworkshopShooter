@@ -25,6 +25,7 @@ public class PlayerController : MonoBehaviour
             if (Input.GetKeyDown(KeyCode.Z))
             {
                 LevelManager.Instance.isRotatingLeft = true;
+
             }
 
             if (Input.GetKeyDown(KeyCode.S))

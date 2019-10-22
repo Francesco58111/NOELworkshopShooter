@@ -4,7 +4,11 @@ using UnityEngine;
 
 public class ChunkSetUp : ScriptableObject
 {
-    public enum objectID {Ennemy, Wall, Nothing};
+    public enum objectID { Nothing, Ennemy, Wall, Collectible };
+
+    public Vector3[] objectPosition;
+    public objectID[] objectId;
+
 
 
 }

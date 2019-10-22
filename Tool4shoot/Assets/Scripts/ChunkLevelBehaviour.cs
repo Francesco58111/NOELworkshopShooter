@@ -10,6 +10,8 @@ public class ChunkLevelBehaviour : MonoBehaviour
 
 
 
+
+
     private void Awake()
     {
         
@@ -18,6 +20,11 @@ public class ChunkLevelBehaviour : MonoBehaviour
     private void Update()
     {
         OnMove();
+
+        if(transform.localPosition.x < -0.5f)
+        {
+            Destroy(this.gameObject);
+        }
     }
 
     private void OnMove()

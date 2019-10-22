@@ -10,7 +10,7 @@ public class LevelManager : MonoBehaviour
     public bool isRotatingRight;
     public bool isTargetSet;
 
-    public Transform currentRotation;
+    public Quaternion currentRotation;
     public Quaternion targetRotation;
 
     public float smooth;
@@ -28,7 +28,7 @@ public class LevelManager : MonoBehaviour
     {
         Instance = this;
 
-        currentRotation.rotation = Quaternion.identity;
+        currentRotation = transform.rotation;
     }
 
 
@@ -46,24 +46,41 @@ public class LevelManager : MonoBehaviour
     {
         if (!isTargetSet)
         {
-            isTargetSet = true;
             targetRotation = Quaternion.Euler(transform.rotation.x + tilt, 0, 0);
+            isTargetSet = true;
+
+            StartCoroutine(StopRotationAfter(targetRotation));
         }
         else
         {
-            transform.rotation = Quaternion.Slerp(transform.rotation, targetRotation, Time.deltaTime * smooth);
+            transform.rotation = Quaternion.Lerp(transform.rotation, targetRotation, Time.deltaTime * smooth);
         }
 
-        
 
-        if (transform.rotation == targetRotation)
-        {
-            isRotatingLeft = false;
-            isRotatingRight = false;
 
-            isTargetSet = false;
+        //if (transform.rotation == targetRotation)
+        //{
+        //    isTargetSet = false;
 
-            currentRotation.rotation = Quaternion.identity;
-        }
+        //    isRotatingLeft = false;
+        //    isRotatingRight = false;
+
+        //    currentRotation = transform.rotation;
+        //}
     }
+
+
+    IEnumerator StopRotationAfter(Quaternion target)
+    {
+        yield return new WaitForSeconds(1f);
+
+        isTargetSet = false;
+
+        isRotatingLeft = false;
+        isRotatingRight = false;
+
+        transform.rotation = targetRotation;
+    }
+
+
 }
