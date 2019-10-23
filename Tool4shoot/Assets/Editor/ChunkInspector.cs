@@ -3,21 +3,38 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEditor;
 
-[CustomEditor(typeof(LevelManager))]
+
+[CustomEditor(typeof(ChunkSetUp))]
 public class ChunkInspector : Editor
 {
-    public ChunkSetUp[] chunks;
 
-    LevelManager lvl;
+    ChunkSetUp targetChunk;
+
 
 
     private void OnEnable()
     {
-        lvl = target as LevelManager;
+        targetChunk = target as ChunkSetUp;
     }
 
     public override void OnInspectorGUI()
     {
-        base.OnInspectorGUI();
+        //base.OnInspectorGUI();
+
+        GUILayoutUtility.GetRect(EditorGUIUtility.currentViewWidth, 1000);
+        
+
+        for (int i = 0; i < targetChunk.objectId.Length; i++)
+        {
+            if(GUI.Button(new Rect(10, 20, 10, 10), "LOL"))
+            {
+                Debug.Log("YES");
+            }
+        }
+    }
+
+    void DrawButton()
+    {
+        
     }
 }

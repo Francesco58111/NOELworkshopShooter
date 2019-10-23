@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using TMPro;
+using UnityEngine.SceneManagement;
 
 public class GameManager : MonoBehaviour
 {
@@ -22,7 +23,7 @@ public class GameManager : MonoBehaviour
         Instance = this;
     }
 
-    void AddToScore(int add)
+    public void AddToScore(int add)
     {
         currentScore += add;
 
@@ -31,11 +32,15 @@ public class GameManager : MonoBehaviour
 
     private void Update()
     {
-        currentDistance += Time.deltaTime * (speedModifier * LevelManager.Instance.levelSpeedModifier);
+        currentDistance += Time.deltaTime * (speedModifier * CoreBehaviour.Instance.levelSpeedModifier);
 
         int distance = (int)currentDistance;
 
         distanceText.text = ("D : " + distance.ToString());
     }
 
+    public void ReloadScene()
+    {
+        SceneManager.LoadScene(SceneManager.GetActiveScene().name);
+    }
 }

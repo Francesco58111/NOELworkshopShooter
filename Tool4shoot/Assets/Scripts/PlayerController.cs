@@ -20,17 +20,17 @@ public class PlayerController : MonoBehaviour
 
     private void Update()
     {
-        if (!LevelManager.Instance.isRotatingLeft && !LevelManager.Instance.isRotatingRight)
+        if (!CoreBehaviour.Instance.isRotatingLeft && !CoreBehaviour.Instance.isRotatingRight)
         {
             if (Input.GetKeyDown(KeyCode.Z))
             {
-                LevelManager.Instance.isRotatingLeft = true;
+                CoreBehaviour.Instance.isRotatingLeft = true;
 
             }
 
             if (Input.GetKeyDown(KeyCode.S))
             {
-                LevelManager.Instance.isRotatingRight = true;
+                CoreBehaviour.Instance.isRotatingRight = true;
             }
         }
 
@@ -51,5 +51,27 @@ public class PlayerController : MonoBehaviour
         {
             objectToFollow.position = new Vector3(objectToFollow.position.x, objectToFollow.position.y - Time.deltaTime * speed, objectToFollow.position.z);
         }
+
+        if (Input.GetKey(KeyCode.LeftArrow) && objectToFollow.position.x > -1f)
+        {
+            objectToFollow.position = new Vector3(objectToFollow.position.x - Time.deltaTime * speed, objectToFollow.position.y, objectToFollow.position.z);
+        }
+
+        if (Input.GetKey(KeyCode.RightArrow) && objectToFollow.position.x < 8f)
+        {
+            objectToFollow.position = new Vector3(objectToFollow.position.x + Time.deltaTime * speed, objectToFollow.position.y, objectToFollow.position.z);
+        }
+    }
+
+    private void OnCollisionEnter(Collision collision)
+    {
+        StartCoroutine(Death());
+    }
+
+    IEnumerator Death()
+    {
+        gameObject.SetActive(false);
+        yield return new WaitForSeconds(3);
+        GameManager.Instance.ReloadScene();
     }
 }
