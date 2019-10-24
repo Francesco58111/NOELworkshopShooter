@@ -17,7 +17,7 @@ public class ChunkLevelBehaviour : MonoBehaviour
     {
         OnMove();
 
-        if (transform.localPosition.x < -0.5f)
+        if (transform.localPosition.x < -0.8f)
         {
             this.gameObject.SetActive(false);
         }

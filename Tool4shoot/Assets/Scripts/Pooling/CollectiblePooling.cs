@@ -27,6 +27,7 @@ public class CollectiblePooling : MonoBehaviour
         for (int i = 0; i < poolCollectibleAmount; i++)
         {
             GameObject obj = (GameObject)Instantiate(pooledCollectible, this.transform);
+            obj.GetComponent<CollectibleBehaviour>().poolTransformParent = this.transform;
             obj.SetActive(false);
             pooledCollectibles.Add(obj);
         }
@@ -36,8 +37,9 @@ public class CollectiblePooling : MonoBehaviour
     {
         for (int i = 0; i < pooledCollectibles.Count; i++)
         {
-            if (!pooledCollectibles[i].activeInHierarchy)
+            if (!pooledCollectibles[i].activeInHierarchy && pooledCollectibles[i].GetComponent<CollectibleBehaviour>().isAvailable)
             {
+                pooledCollectibles[i].GetComponent<CollectibleBehaviour>().isAvailable = false;
                 return pooledCollectibles[i];
             }
         }

@@ -2,11 +2,8 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class EnnemyBehaviour : MonoBehaviour
+public class WallBehaviour : MonoBehaviour
 {
-    public GameObject prefab;
-    public float delay;
-
     public Transform poolTransformParent;
     public bool isAvailable;
 
@@ -27,13 +24,9 @@ public class EnnemyBehaviour : MonoBehaviour
 
     }
 
-    private void OnTriggerEnter(Collider other)
+    private void OnCollisionEnter(Collision collision)
     {
-        if (other.gameObject.tag == "Player")
-        {
-            this.transform.parent = poolTransformParent;
-            isAvailable = true;
-            this.gameObject.SetActive(false);
-        }
+        collision.gameObject.SetActive(false);
+        GameManager.Instance.ReloadScene();
     }
 }

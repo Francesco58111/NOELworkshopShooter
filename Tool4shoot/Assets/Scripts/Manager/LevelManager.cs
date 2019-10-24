@@ -5,10 +5,12 @@ using UnityEngine;
 public class LevelManager : MonoBehaviour
 {
     [Header("Spawn Delay")]
-    public float delayBySpawn;
+    public float delayBySpawn = 1;
     private float currentDelay;
 
-    private Vector3 startPosition = new Vector3(0.7f, 0, 0);
+    private Vector3 startPosition = new Vector3(15f, 0, 0);
+    private Vector3 wallScale = new Vector3(1, 5, 1.5f);
+    //private Vector3 
 
     [Header("Chunk Config List")]
     public List<ChunkSetUp> chunkConfigList = new List<ChunkSetUp>();
@@ -34,6 +36,9 @@ public class LevelManager : MonoBehaviour
 
     void Update()
     {
+        // if (Time.time % delayBySpawn < Time.deltaTime) SpawnNextChunk();
+
+
         if (currentDelay < delayBySpawn)
         {
             currentDelay += Time.deltaTime;
@@ -57,78 +62,98 @@ public class LevelManager : MonoBehaviour
 
 
         int configIndex = Random.Range(0, chunkConfigList.Count);
-
+        int currentPosition = 0;
 
         for (int i = 0; i < chunkConfigList[configIndex].objectId.Length; i++)
         {
-            switch (chunkConfigList[configIndex].objectId[i])
+            //Debug.Log(i);
+            //Debug.Log(chunkConfigList[configIndex].objectId[i]);
+
+            
+
+
+            if (chunkConfigList[configIndex].objectId[i] == ChunkSetUp.ObjectIDs.Wall)
             {
-                case ChunkSetUp.ObjectIDs.Nothing:
-                    break;
+                GameObject wall = WallPooling.Instance.GetWallPooled();
 
 
-                case ChunkSetUp.ObjectIDs.Ennemy:
-                    GameObject ennemy = EnnemyPooling.Instance.GetEnnemyPooled();
-
-                    if (ennemy == null)
-                        return;
-
-                    if (i == 0 && i < 6)
-                        ennemy.transform.parent = objChunk.upParent;
-                    else if (i > 5 && i < 12)
-                        ennemy.transform.parent = objChunk.frontParent;
-                    else if (i > 11 && i < 18)
-                        ennemy.transform.parent = objChunk.backParent;
-                    else if (i > 17)
-                        ennemy.transform.parent = objChunk.downParent;
-
-                    ennemy.transform.localPosition = chunkPositions[i];
-                    ennemy.SetActive(true);
-                    break;
-
-
-                case ChunkSetUp.ObjectIDs.Wall:
-                    GameObject wall = WallPooling.Instance.GetWallPooled();
-
-                    if (wall == null)
-                        return;
-
-                    if (i == 0 && i < 6)
+                if (wall != null)
+                {
+                    if (i < 6)
                         wall.transform.parent = objChunk.upParent;
-                    else if (i > 5 && i < 12)
+                    else if (i < 12)
                         wall.transform.parent = objChunk.frontParent;
-                    else if (i > 11 && i < 18)
+                    else if (i < 18)
                         wall.transform.parent = objChunk.backParent;
                     else if (i > 17)
                         wall.transform.parent = objChunk.downParent;
 
-                    wall.transform.localPosition = chunkPositions[i];
+
+                    wall.transform.localPosition = chunkPositions[currentPosition];
+                    wall.transform.localEulerAngles = new Vector3(0, 0, 0);
+                    wall.transform.localScale = wallScale;
                     wall.SetActive(true);
-                    break;
+                }
+                
+            }
+
+            if (chunkConfigList[configIndex].objectId[i] == ChunkSetUp.ObjectIDs.Ennemy)
+            {
+                GameObject ennemy = EnnemyPooling.Instance.GetEnnemyPooled();
+
+                if (ennemy != null)
+                {
+                    if (i < 6)
+                        ennemy.transform.parent = objChunk.upParent;
+                    else if (i < 12)
+                        ennemy.transform.parent = objChunk.frontParent;
+                    else if (i < 18)
+                        ennemy.transform.parent = objChunk.backParent;
+                    else if (i > 17)
+                        ennemy.transform.parent = objChunk.downParent;
 
 
-                case ChunkSetUp.ObjectIDs.Collectible:
-                    GameObject col = CollectiblePooling.Instance.GetCollectiblePooled();
+                    ennemy.transform.localPosition = chunkPositions[currentPosition];
+                    ennemy.transform.localEulerAngles = new Vector3(0, 0, 0);
+                    //ennemy.transform.localScale = new Vector3(1,1,1);
 
-                    if (col == null)
-                        return;
+                    ennemy.SetActive(true);
+                }
+               
+            }
 
-                    if (i == 0 && i < 6)
+            if (chunkConfigList[configIndex].objectId[i] == ChunkSetUp.ObjectIDs.Collectible)
+            {
+                GameObject col = CollectiblePooling.Instance.GetCollectiblePooled();
+
+                if (col != null)
+                {
+                    if (i < 6)
                         col.transform.parent = objChunk.upParent;
-                    else if (i > 5 && i < 12)
+                    else if (i < 12)
                         col.transform.parent = objChunk.frontParent;
-                    else if (i > 11 && i < 18)
+                    else if (i < 18)
                         col.transform.parent = objChunk.backParent;
                     else if (i > 17)
                         col.transform.parent = objChunk.downParent;
 
-                    col.transform.localPosition = chunkPositions[i];
+
+                    col.transform.localPosition = chunkPositions[currentPosition];
+                    col.transform.localEulerAngles = new Vector3(20,-70,0);
+                    //col.transform.localScale = new Vector3(0.5f, 0.5f, 0.5f);
                     col.SetActive(true);
-                    break;
+                }
+              
             }
+
+            currentPosition ++;
+
+            if (currentPosition > 5)
+                currentPosition = 0;
+
         }
-        
-    
+
+
         obj.SetActive(true);
     }
 }

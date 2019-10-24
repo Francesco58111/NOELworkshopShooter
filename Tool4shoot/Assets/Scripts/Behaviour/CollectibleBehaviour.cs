@@ -2,11 +2,8 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class EnnemyBehaviour : MonoBehaviour
+public class CollectibleBehaviour : MonoBehaviour
 {
-    public GameObject prefab;
-    public float delay;
-
     public Transform poolTransformParent;
     public bool isAvailable;
 
@@ -18,7 +15,7 @@ public class EnnemyBehaviour : MonoBehaviour
 
     private void Update()
     {
-        if (transform.position.x < -4f)
+        if(transform.position.x < -4f)
         {
             this.transform.parent = poolTransformParent;
             isAvailable = true;
@@ -29,10 +26,10 @@ public class EnnemyBehaviour : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
-        if (other.gameObject.tag == "Player")
+        if(other.gameObject.tag == "Player")
         {
             this.transform.parent = poolTransformParent;
-            isAvailable = true;
+            GameManager.Instance.AddToScore(1);
             this.gameObject.SetActive(false);
         }
     }

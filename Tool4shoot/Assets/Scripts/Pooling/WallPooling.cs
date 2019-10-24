@@ -10,8 +10,8 @@ public class WallPooling : MonoBehaviour
 
     List<GameObject> pooledWalls;
 
-
     public static WallPooling Instance;
+
 
 
 
@@ -27,6 +27,7 @@ public class WallPooling : MonoBehaviour
         for (int i = 0; i < poolWallAmount; i++)
         {
             GameObject obj = (GameObject)Instantiate(pooledWall, this.transform);
+            obj.GetComponent<WallBehaviour>().poolTransformParent = this.transform;
             obj.SetActive(false);
             pooledWalls.Add(obj);
         }
@@ -36,8 +37,9 @@ public class WallPooling : MonoBehaviour
     {
         for (int i = 0; i < pooledWalls.Count; i++)
         {
-            if (!pooledWalls[i].activeInHierarchy)
+            if (!pooledWalls[i].activeInHierarchy && pooledWalls[i].GetComponent<WallBehaviour>().isAvailable)
             {
+                pooledWalls[i].GetComponent<WallBehaviour>().isAvailable = false;
                 return pooledWalls[i];
             }
         }
