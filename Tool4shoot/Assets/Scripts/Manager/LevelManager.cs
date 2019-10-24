@@ -14,7 +14,7 @@ public class LevelManager : MonoBehaviour
 
     [Header("Chunk Config List")]
     public List<ChunkSetUp> chunkConfigList = new List<ChunkSetUp>();
-    public Vector3[] chunkPositions;
+    private Vector3[] chunkPositions = new Vector3[6];
 
 
 
@@ -26,13 +26,14 @@ public class LevelManager : MonoBehaviour
     private void Awake()
     {
         Instance = this;
+
+        for (int i = 0; i < chunkPositions.Length; i++)
+        {
+            float z = -3.75f;
+            chunkPositions[i] = new Vector3(0, 0, z + 1.5f*i);
+        }
     }
 
-
-    void Start()
-    {
-
-    }
 
     void Update()
     {

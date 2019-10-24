@@ -56,12 +56,15 @@ public class ChunkInspector : Editor
 
 
 
-        GUI.Label(new Rect(Screen.width / 2 - 50, 0, 100, 50), "Configuration", EditorStyles.boldLabel);
+        GUI.Label(new Rect(Screen.width / 2 - 50, 10, 100, 50), "Configuration", EditorStyles.boldLabel);
 
         float[] separatorPosition = new float[3];
         separatorPosition[0] = (xPosition[7] +(xPosition[6] - xPosition[7])) + (xPosition[6] + 20 - xPosition[7])/2;
         separatorPosition[1] = (xPosition[13] + (xPosition[6] - xPosition[7])) + (xPosition[6] + 20 - xPosition[7]) / 2;
         separatorPosition[2] = (xPosition[19] + (xPosition[6] - xPosition[7])) + (xPosition[6] + 20 - xPosition[7]) / 2;
+
+        GUI.Label(new Rect(xPosition[8], lineByTwo * 2.5f, 100, 50), "Face\nvisible\nau début\n", EditorStyles.boldLabel);
+
 
         //Debug.Log(separatorPosition[0]);
 
@@ -113,12 +116,6 @@ public class ChunkInspector : Editor
 
         GUILayout.EndHorizontal();
 
-
-        GUILayout.BeginHorizontal();
-
-
-
-        GUILayout.EndHorizontal();
     }
 
 

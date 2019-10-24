@@ -9,6 +9,8 @@ public class LevelManagerInspector : Editor
 {
 
     LevelManager levelManager;
+    SerializedProperty delayProperty;
+    SerializedProperty positions;
 
     int size = 0;
     List<Vector3> structurePosition;
@@ -18,6 +20,7 @@ public class LevelManagerInspector : Editor
     private void OnEnable()
     {
         levelManager = target as LevelManager;
+        delayProperty = serializedObject.FindProperty("delayBySpawn");
     }
 
 
@@ -25,7 +28,6 @@ public class LevelManagerInspector : Editor
     public override void OnInspectorGUI()
     {
         base.OnInspectorGUI();
-
 
 
         EditorGUI.BeginChangeCheck();
@@ -36,7 +38,7 @@ public class LevelManagerInspector : Editor
 
         size = EditorGUILayout.IntField("Number of Chunks", size);
 
-        if (GUILayout.Button("Set Chunk Config array Size"))
+        if (GUILayout.Button("Create"))
         {
             GenerateChunk(size);
         }
@@ -61,7 +63,7 @@ public class LevelManagerInspector : Editor
 
 
 
-        for (int i = levelManager.chunkConfigList.Count; i < size; i++)
+        for (int i = 0; i < size; i++)
         {
             ChunkSetUp chunk = new ChunkSetUp();
 

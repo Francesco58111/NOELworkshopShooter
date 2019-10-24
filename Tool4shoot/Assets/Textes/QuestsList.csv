@@ -1,0 +1,7 @@
+﻿Index;Title;Description;Condition Type;Goal;Reward
+0;Ruée vers l'or;Récupérer les pièces à la dérive;Gold;15;5
+1;Perdre la tête;Explorer les alentours de la structure;Exploration;10;5
+2;La médaille d'or;Battre le dernier record;Distance;500;20
+3;Responsabilité paternelle;Récupérer assez d'argent pour payer la pension de vos enfants;Gold;50;35
+4;Théorie ou vérité ?;Prouver qu'un vaisseau peut survivre en hyper-espace;Time;15;20
+5;Mort ou vif ? MORT;Eliminez ses pirates avant qu'il ne vous élimine à votre place;Kill;10;10
