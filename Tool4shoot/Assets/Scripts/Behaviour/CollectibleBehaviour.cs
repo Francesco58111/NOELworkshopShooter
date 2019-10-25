@@ -7,6 +7,8 @@ public class CollectibleBehaviour : MonoBehaviour
     public Transform poolTransformParent;
     public bool isAvailable;
 
+    public float rewardValue;
+
 
     private void Awake()
     {
@@ -29,7 +31,8 @@ public class CollectibleBehaviour : MonoBehaviour
         if(other.gameObject.tag == "Player")
         {
             this.transform.parent = poolTransformParent;
-            GameManager.Instance.AddToScore(1);
+            QuestManager.Instance.UpdateGoal(QuestManager.Instance.CheckQuestForValue(rewardValue, ConditionType.Gold));
+            //GameManager.Instance.AddToScore(1);
             this.gameObject.SetActive(false);
         }
     }

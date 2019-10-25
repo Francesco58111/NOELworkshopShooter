@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-[CreateAssetMenu(fileName = "NewQuestList.asset", menuName = "Quest/QuestList", order = 100)]
+[CreateAssetMenu(fileName = "NewMissionList.asset", menuName = "Custom/New Mission List", order = 100)]
 public class QuestReader : ScriptableObject
 {
     public TextAsset myCSV;
@@ -10,7 +10,7 @@ public class QuestReader : ScriptableObject
     public QuestSettings[] missions;
 }
 
-    public enum ConditionType { Gold, Distance, Exploration, Time, Kill };
+    public enum ConditionType { Gold, Distance, Exploration, Kill };
 
 
     

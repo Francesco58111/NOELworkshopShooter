@@ -7,11 +7,11 @@ using UnityEngine.SceneManagement;
 public class GameManager : MonoBehaviour
 {
     public TextMeshProUGUI scoreText;
-    public TextMeshProUGUI distanceText;
 
     private int currentScore;
-    private float currentDistance;
-    public float speedModifier;
+    [Range(0,2)]
+    public float gameSpeedModifier;
+    
 
     public static GameManager Instance;
 
@@ -23,20 +23,13 @@ public class GameManager : MonoBehaviour
         Instance = this;
     }
 
-    public void AddToScore(int add)
+
+
+    public void AddToScore(float add)
     {
-        currentScore += add;
+        currentScore += (int)add;
 
-        scoreText.text = "S : " + currentScore.ToString();
-    }
-
-    private void Update()
-    {
-        currentDistance += Time.deltaTime * (speedModifier * CoreBehaviour.Instance.levelSpeedModifier);
-
-        int distance = (int)currentDistance;
-
-        distanceText.text = ("D : " + distance.ToString());
+        scoreText.text = currentScore.ToString();
     }
 
     public void ReloadScene()

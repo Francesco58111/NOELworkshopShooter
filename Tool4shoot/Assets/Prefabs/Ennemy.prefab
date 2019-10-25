@@ -94,6 +94,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   prefab: {fileID: 0}
   delay: 0
+  poolTransformParent: {fileID: 0}
+  isAvailable: 0
+  rewardValue: 1
 --- !u!135 &4313433557234570418
 SphereCollider:
   m_ObjectHideFlags: 0

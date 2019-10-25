@@ -5,67 +5,84 @@ using UnityEditor;
 using UnityEditor.SceneManagement;
 
 
-[CustomEditor(typeof(ChunkSetUp))]
-public class ChunkInspector : Editor
+public class ChunkEditorWindow : EditorWindow
 {
+    Vector2 virtualPosition;
+    ChunkSetUp currentChunk;
+    Editor currentChunkInspector;
 
-    public ChunkSetUp targetChunk;
-    public ChunkSetUp[] chunks;
+    Texture separator;
+
+    ChunkSetUp[] chunks = new ChunkSetUp[0];
 
 
-    private void OnEnable()
+    public static void OpenThisWindow()
     {
-        targetChunk = target as ChunkSetUp;
-        chunks = new ChunkSetUp[targets.Length];
-        for (int i = 0; i < targets.Length; i++)
-        {
-            chunks[i] = targets[i] as ChunkSetUp;
-        }
+        ChunkEditorWindow myChunkEditorWindow = EditorWindow.GetWindow(typeof(ChunkEditorWindow)) as ChunkEditorWindow;
 
+        myChunkEditorWindow.Init(Selection.activeObject as ChunkSetUp);
+    }
+
+    public void Init(ChunkSetUp assetTarget)
+    {
+        minSize = new Vector2(500, 100);
+        virtualPosition = Vector2.zero;
+
+        currentChunk = assetTarget;
+
+        Selection.selectionChanged += OnSelectionChange;
+
+        separator = EditorGUIUtility.Load("Assets/Materials/Line1.png") as Texture;
+
+        Undo.undoRedoPerformed += MyUndoCallBack;
+
+        Show();
+    }
+
+    void MyUndoCallBack()
+    {
         ChunkEditorWindow[] cew = Resources.FindObjectsOfTypeAll(typeof(ChunkEditorWindow)) as ChunkEditorWindow[];
-        if(cew.Length != 0)
+        if (cew.Length != 0)
         {
+
             for (int i = 0; i < cew.Length; i++)
             {
-                cew[i].Focus();
+                cew[i].Repaint();
             }
+        }
+
+        EditorSceneManager.MarkSceneDirty(EditorSceneManager.GetActiveScene());
+    }
+
+    private void OnSelectionChange()
+    {
+        if (Selection.activeObject is ChunkSetUp)
+        {
+            currentChunk = Selection.activeObject as ChunkSetUp;
+            Repaint();
         }
     }
 
-
-
-    public override void OnInspectorGUI()
+    private void OnGUI()
     {
-        //base.OnInspectorGUI();
+        GUILayout.BeginHorizontal("box");
 
-        Undo.RecordObjects(chunks, "Edited Something");
-
-
-        if (GUILayout.Button("Open Editor Window", GUILayout.Height(100)))
-        {
-            ChunkEditorWindow myChunkEditorWindow = EditorWindow.GetWindow(typeof(ChunkEditorWindow)) as ChunkEditorWindow;
-
-            myChunkEditorWindow.Init(targetChunk);
-        }
-
-        #region MovedIntoWindow
-        /*
-        GUILayoutUtility.GetRect(EditorGUIUtility.currentViewWidth, 1000);
+        GUILayoutUtility.GetRect(EditorGUIUtility.currentViewWidth, 500);
         var centeredLabel = GUI.skin.GetStyle("Label");
         centeredLabel.alignment = TextAnchor.MiddleCenter;
 
 
-        GUILayout.BeginHorizontal("box");
+        
 
         float spaceX = 20;
         float lineByTwo = EditorGUIUtility.singleLineHeight * 2;
 
         float inspectorWidth = Screen.width;
 
-        float[] xPosition = new float[targetChunk.objectId.Length];
-        for (int i = 0; i < targetChunk.objectId.Length; i++)
+        float[] xPosition = new float[currentChunk.objectId.Length];
+        for (int i = 0; i < currentChunk.objectId.Length; i++)
         {
-            float dividedInspector = (inspectorWidth - (spaceX * 2)) / targetChunk.objectId.Length;
+            float dividedInspector = (inspectorWidth - (spaceX * 2)) / currentChunk.objectId.Length;
 
             xPosition[i] = (dividedInspector + 0) + dividedInspector * i;
         }
@@ -75,11 +92,11 @@ public class ChunkInspector : Editor
         GUI.Label(new Rect(Screen.width / 2 - 50, 10, 100, 50), "Configuration", EditorStyles.boldLabel);
 
         float[] separatorPosition = new float[3];
-        separatorPosition[0] = (xPosition[7] +(xPosition[6] - xPosition[7])) + (xPosition[6] + 20 - xPosition[7])/2;
+        separatorPosition[0] = (xPosition[7] + (xPosition[6] - xPosition[7])) + (xPosition[6] + 20 - xPosition[7]) / 2;
         separatorPosition[1] = (xPosition[13] + (xPosition[6] - xPosition[7])) + (xPosition[6] + 20 - xPosition[7]) / 2;
         separatorPosition[2] = (xPosition[19] + (xPosition[6] - xPosition[7])) + (xPosition[6] + 20 - xPosition[7]) / 2;
 
-        GUI.Label(new Rect(xPosition[8], lineByTwo * 2.5f, 100, 50), "Face\nvisible\nau début\n", EditorStyles.boldLabel);
+        GUI.Label(new Rect(xPosition[7] + 20, lineByTwo * 2.5f, 200, 50), "Face du niveau visible", EditorStyles.boldLabel);
 
 
         //Debug.Log(separatorPosition[0]);
@@ -89,7 +106,7 @@ public class ChunkInspector : Editor
             GUI.DrawTexture(new Rect(separatorPosition[i], lineByTwo + 14, 2, 20), separator);
         }
 
-        for (int i = 0; i < targetChunk.objectId.Length; i++)
+        for (int i = 0; i < currentChunk.objectId.Length; i++)
         {
             float y = lineByTwo + EditorGUIUtility.singleLineHeight;
             string buttonName = " ";
@@ -97,25 +114,25 @@ public class ChunkInspector : Editor
             Vector2 position = new Vector2(xPosition[i], y);
             Vector2 size = new Vector2(20, 20);
 
-            if ((int)targetChunk.objectId[i] == 0)
+            if ((int)currentChunk.objectId[i] == 0)
             {
                 GUI.color = Color.white;
                 buttonName = " ";
             }
 
-            if ((int)targetChunk.objectId[i] == 2)
+            if ((int)currentChunk.objectId[i] == 2)
             {
                 GUI.color = Color.red;
                 buttonName = " E";
             }
 
-            if ((int)targetChunk.objectId[i] == 1)
+            if ((int)currentChunk.objectId[i] == 1)
             {
                 GUI.color = Color.black;
                 buttonName = " W";
             }
 
-            if ((int)targetChunk.objectId[i] == 3)
+            if ((int)currentChunk.objectId[i] == 3)
             {
                 GUI.color = Color.yellow;
                 buttonName = " C";
@@ -131,24 +148,20 @@ public class ChunkInspector : Editor
         }
 
         GUILayout.EndHorizontal();
-        */
-        #endregion
     }
 
-    #region MovedIntoWindow
 
-    /*
     void ButtonAssignation(int enumIndex)
     {
         EditorGUI.BeginChangeCheck();
 
-        Undo.RecordObjects(chunks, "Edited Something");
+        Undo.RecordObject(currentChunk, "Edited Something");
 
-        ChunkSetUp.ObjectIDs currentEnum = targetChunk.objectId[enumIndex]++;
+        ChunkSetUp.ObjectIDs currentEnum = currentChunk.objectId[enumIndex]++;
 
-        if ((int)targetChunk.objectId[enumIndex] > 3)
+        if ((int)currentChunk.objectId[enumIndex] > 3)
         {
-            targetChunk.objectId[enumIndex] = ChunkSetUp.ObjectIDs.Nothing;
+            currentChunk.objectId[enumIndex] = ChunkSetUp.ObjectIDs.Nothing;
         }
 
         EditorSceneManager.MarkSceneDirty(EditorSceneManager.GetActiveScene());
@@ -158,13 +171,11 @@ public class ChunkInspector : Editor
         {
             for (int i = 0; i < chunks.Length; i++)
             {
-                chunks[i].objectId[i] = targetChunk.objectId[enumIndex];
+                chunks[i].objectId[i] = currentChunk.objectId[enumIndex];
             }
 
             //On sauvegarde
             EditorSceneManager.MarkSceneDirty(EditorSceneManager.GetActiveScene());
         }
     }
-    */
-    #endregion
 }

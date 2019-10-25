@@ -13,7 +13,7 @@ public class LevelManager : MonoBehaviour
     //private Vector3 
 
     [Header("Chunk Config List")]
-    public List<ChunkSetUp> chunkConfigList = new List<ChunkSetUp>();
+    public ChunkSetUp[] chunkConfigList;
     private Vector3[] chunkPositions = new Vector3[6];
 
 
@@ -42,7 +42,7 @@ public class LevelManager : MonoBehaviour
 
         if (currentDelay < delayBySpawn)
         {
-            currentDelay += Time.deltaTime;
+            currentDelay += Time.deltaTime * GameManager.Instance.gameSpeedModifier;
         }
         else
         {
@@ -62,15 +62,14 @@ public class LevelManager : MonoBehaviour
         ChunkLevelBehaviour objChunk = obj.GetComponent<ChunkLevelBehaviour>();
 
 
-        int configIndex = Random.Range(0, chunkConfigList.Count);
+        int configIndex = Random.Range(0, chunkConfigList.Length);
+        //Debug.Log("Selected config : " + configIndex);
         int currentPosition = 0;
 
         for (int i = 0; i < chunkConfigList[configIndex].objectId.Length; i++)
         {
             //Debug.Log(i);
             //Debug.Log(chunkConfigList[configIndex].objectId[i]);
-
-            
 
 
             if (chunkConfigList[configIndex].objectId[i] == ChunkSetUp.ObjectIDs.Wall)

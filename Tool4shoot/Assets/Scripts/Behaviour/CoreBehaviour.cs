@@ -16,9 +16,9 @@ public class CoreBehaviour : MonoBehaviour
 
     public AnimationCurve rotationCurve;
     public float currentRotationTime;
+    public float rotationSpeed;
     public float percent;
 
-    public float levelSpeedModifier = 0;
 
 
 
@@ -54,7 +54,7 @@ public class CoreBehaviour : MonoBehaviour
     {
         if (currentRotationTime < 1)
         {
-            currentRotationTime += Time.deltaTime;
+            currentRotationTime += (Time.deltaTime * rotationSpeed) * GameManager.Instance.gameSpeedModifier;
 
             percent = rotationCurve.Evaluate(currentRotationTime);
         }
@@ -81,8 +81,8 @@ public class CoreBehaviour : MonoBehaviour
             isTargetSet = true;
             targetRotation = new Vector3(currentRotation.x + tilt, currentRotation.y, currentRotation.z);
 
-            Debug.Log("current Rotation = " + currentRotation);
-            Debug.Log("target Rotation = " + targetRotation);
+            //Debug.Log("current Rotation = " + currentRotation);
+            //Debug.Log("target Rotation = " + targetRotation);
         }
         else
         {

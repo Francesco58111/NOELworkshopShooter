@@ -21,12 +21,13 @@ public class PlayerController : MonoBehaviour
             if (Input.GetKeyDown(KeyCode.Z))
             {
                 CoreBehaviour.Instance.isRotatingLeft = true;
-
+                QuestManager.Instance.UpdateGoal(QuestManager.Instance.CheckQuestForValue(1, ConditionType.Exploration));
             }
 
             if (Input.GetKeyDown(KeyCode.S))
             {
                 CoreBehaviour.Instance.isRotatingRight = true;
+                QuestManager.Instance.UpdateGoal(QuestManager.Instance.CheckQuestForValue(1, ConditionType.Exploration));
             }
         }
 

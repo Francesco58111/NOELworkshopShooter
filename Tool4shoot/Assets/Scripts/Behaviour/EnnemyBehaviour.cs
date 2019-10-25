@@ -10,6 +10,8 @@ public class EnnemyBehaviour : MonoBehaviour
     public Transform poolTransformParent;
     public bool isAvailable;
 
+    public float rewardValue;
+
 
     private void Awake()
     {
@@ -32,6 +34,8 @@ public class EnnemyBehaviour : MonoBehaviour
         if (other.gameObject.tag == "Player")
         {
             this.transform.parent = poolTransformParent;
+            QuestManager.Instance.UpdateGoal(QuestManager.Instance.CheckQuestForValue(rewardValue, ConditionType.Kill));
+
             isAvailable = true;
             this.gameObject.SetActive(false);
         }

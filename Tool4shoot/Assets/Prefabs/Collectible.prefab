@@ -92,6 +92,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6653def636135b6468a8cc8176d2cc79, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  poolTransformParent: {fileID: 0}
+  isAvailable: 0
+  rewardValue: 1
 --- !u!65 &4857023501993182122
 BoxCollider:
   m_ObjectHideFlags: 0

@@ -25,7 +25,7 @@ public class ChunkLevelBehaviour : MonoBehaviour
 
     private void OnMove()
     {
-        transform.localPosition = new Vector3(transform.localPosition.x - (Time.deltaTime * defaultSpeed * CoreBehaviour.Instance.levelSpeedModifier), 0, 0);
+        transform.localPosition = new Vector3(transform.localPosition.x - (Time.deltaTime * defaultSpeed * GameManager.Instance.gameSpeedModifier), 0, 0);
     }
 
 }
